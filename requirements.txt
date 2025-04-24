@@ -1,0 +1,7 @@
+Flask
+tldextract
+beautifulsoup4
+playwright
+openai
+aiohttp
+tqdm
