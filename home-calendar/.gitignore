@@ -1,0 +1,32 @@
+# Node modules
+node_modules/
+package-lock.json
+
+# Configuration files (contains sensitive data)
+config/calendar-config.json
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Temporary files
+tmp/
+temp/
+*.tmp

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar Setup</title>
+    <link rel="stylesheet" href="css/setup.css">
+</head>
+<body>
+    <div class="setup-container">
+        <!-- Step Indicator -->
+        <div class="steps-indicator">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">WiFi</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Calendars</div>
+            </div>
+            <div class="step-line"></div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Done</div>
+            </div>
+        </div>
+
+        <!-- Setup Content -->
+        <div class="setup-content">
+            <!-- Step 1: WiFi Setup -->
+            <div class="setup-step active" id="step1">
+                <h1>🌐 Connect to WiFi</h1>
+                <p>Select your WiFi network and enter the password</p>
+
+                <div class="wifi-list" id="wifiList">
+                    <!-- WiFi networks will be listed here -->
+                </div>
+
+                <button class="btn btn-secondary" id="scanWifi">🔄 Refresh Networks</button>
+                <button class="btn btn-primary" id="skipWifi">Skip WiFi Setup</button>
+            </div>
+
+            <!-- WiFi Password Modal -->
+            <div class="wifi-password-modal hidden" id="wifiPasswordModal">
+                <div class="modal-content">
+                    <h2>Connect to <span id="selectedSsid"></span></h2>
+                    <div class="form-group">
+                        <label for="wifiPassword">Password:</label>
+                        <input type="password" id="wifiPassword" placeholder="Enter WiFi password">
+                        <div class="show-password">
+                            <input type="checkbox" id="showPassword">
+                            <label for="showPassword">Show password</label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="connectWifi">Connect</button>
+                        <button class="btn btn-secondary" id="cancelWifi">Cancel</button>
+                    </div>
+                    <div id="wifiError" class="error-message hidden"></div>
+                </div>
+            </div>
+
+            <!-- Step 2: Calendar Setup -->
+            <div class="setup-step" id="step2">
+                <h1>📅 Add Your Calendars</h1>
+                <p>Add calendars from Google, iCloud, or other sources</p>
+
+                <div class="calendars-added" id="calendarsAdded">
+                    <h3>Added Calendars</h3>
+                    <div id="addedCalendarsList">
+                        <p class="empty-state">No calendars added yet</p>
+                    </div>
+                </div>
+
+                <div class="add-calendar-section">
+                    <h3>Add a Calendar</h3>
+
+                    <div class="calendar-type-buttons">
+                        <button class="type-card" data-type="google">
+                            <div class="type-icon">📅</div>
+                            <div class="type-name">Google Calendar</div>
+                        </button>
+                        <button class="type-card" data-type="icloud">
+                            <div class="type-icon">☁️</div>
+                            <div class="type-name">iCloud Calendar</div>
+                        </button>
+                        <button class="type-card" data-type="ical">
+                            <div class="type-icon">🔗</div>
+                            <div class="type-name">iCal URL</div>
+                        </button>
+                        <button class="type-card" data-type="caldav">
+                            <div class="type-icon">🗄️</div>
+                            <div class="type-name">CalDAV</div>
+                        </button>
+                    </div>
+
+                    <div id="calendarFormContainer" class="hidden">
+                        <div class="form-group">
+                            <label for="setupCalendarName">Calendar Name:</label>
+                            <input type="text" id="setupCalendarName" placeholder="e.g., Work, Personal, Family">
+                        </div>
+
+                        <div class="form-group" id="setupUrlGroup">
+                            <label for="setupCalendarUrl">Calendar URL:</label>
+                            <input type="url" id="setupCalendarUrl" placeholder="https://...">
+                            <small id="setupUrlHelp" class="help-text">Enter your calendar's iCal URL</small>
+                        </div>
+
+                        <div class="form-group hidden" id="setupCaldavGroup">
+                            <label for="setupCaldavUsername">Username:</label>
+                            <input type="text" id="setupCaldavUsername">
+
+                            <label for="setupCaldavPassword">Password:</label>
+                            <input type="password" id="setupCaldavPassword">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Calendar Color:</label>
+                            <div class="color-picker" id="setupColorPicker">
+                                <div class="color-option selected" data-color="#3788d8" style="background: #3788d8;"></div>
+                                <div class="color-option" data-color="#e74c3c" style="background: #e74c3c;"></div>
+                                <div class="color-option" data-color="#2ecc71" style="background: #2ecc71;"></div>
+                                <div class="color-option" data-color="#f39c12" style="background: #f39c12;"></div>
+                                <div class="color-option" data-color="#9b59b6" style="background: #9b59b6;"></div>
+                                <div class="color-option" data-color="#1abc9c" style="background: #1abc9c;"></div>
+                                <div class="color-option" data-color="#e91e63" style="background: #e91e63;"></div>
+                                <div class="color-option" data-color="#ff5722" style="background: #ff5722;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn btn-primary" id="addCalendarSubmit">Add Calendar</button>
+                            <button class="btn btn-secondary" id="cancelAddCalendar">Cancel</button>
+                        </div>
+
+                        <div id="setupCalendarError" class="error-message hidden"></div>
+                    </div>
+                </div>
+
+                <div class="step-actions">
+                    <button class="btn btn-secondary" id="backToWifi">← Back</button>
+                    <button class="btn btn-primary" id="finishSetup">Finish Setup →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Completion -->
+            <div class="setup-step" id="step3">
+                <div class="completion-content">
+                    <div class="success-icon">✅</div>
+                    <h1>Setup Complete!</h1>
+                    <p>Your home calendar is ready to use.</p>
+                    <p class="completion-details">
+                        <strong>WiFi:</strong> <span id="completionWifi">Connected</span><br>
+                        <strong>Calendars:</strong> <span id="completionCalendars">0</span> added
+                    </p>
+                    <button class="btn btn-primary btn-large" id="goToCalendar">Open Calendar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p id="loadingText">Loading...</p>
+    </div>
+
+    <script src="js/setup.js"></script>
+</body>
+</html>

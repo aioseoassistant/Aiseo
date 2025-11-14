@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Calendar</title>
+    <link rel="stylesheet" href="css/calendar.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="calendar-header">
+        <div class="header-left">
+            <h1 class="month-year" id="monthYear"></h1>
+        </div>
+        <div class="header-center">
+            <button class="nav-btn" id="prevWeek">&larr;</button>
+            <button class="today-btn" id="todayBtn">Today</button>
+            <button class="nav-btn" id="nextWeek">&rarr;</button>
+        </div>
+        <div class="header-right">
+            <div class="sync-status" id="syncStatus">
+                <span class="sync-icon">🔄</span>
+                <span class="sync-text">Synced</span>
+            </div>
+            <button class="settings-btn" id="settingsBtn">⚙️</button>
+        </div>
+    </header>
+
+    <!-- Calendar Grid -->
+    <main class="calendar-main">
+        <div class="week-view" id="weekView">
+            <!-- Days will be dynamically generated here -->
+        </div>
+    </main>
+
+    <!-- Touch Menu (activated by long press) -->
+    <div class="touch-menu hidden" id="touchMenu">
+        <div class="touch-menu-content">
+            <h2>Menu</h2>
+            <button class="menu-item" id="menuAddCalendar">📅 Add Calendar</button>
+            <button class="menu-item" id="menuManageCalendars">🗂️ Manage Calendars</button>
+            <button class="menu-item" id="menuSettings">⚙️ Settings</button>
+            <button class="menu-item" id="menuRefresh">🔄 Refresh Now</button>
+            <button class="menu-item close-menu" id="menuClose">✖️ Close</button>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal hidden" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Settings</h2>
+                <button class="close-btn" id="closeSettings">✖️</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="timeFormat">Time Format:</label>
+                    <select id="timeFormat">
+                        <option value="12h">12-hour (9:00 AM)</option>
+                        <option value="24h">24-hour (09:00)</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label for="firstDayOfWeek">First Day of Week:</label>
+                    <select id="firstDayOfWeek">
+                        <option value="sunday">Sunday</option>
+                        <option value="monday">Monday</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label for="refreshInterval">Refresh Interval:</label>
+                    <select id="refreshInterval">
+                        <option value="1">1 minute</option>
+                        <option value="5">5 minutes</option>
+                        <option value="15">15 minutes</option>
+                        <option value="30">30 minutes</option>
+                    </select>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="showLocation">
+                        Show event location
+                    </label>
+                </div>
+
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="showDescription">
+                        Show event description
+                    </label>
+                </div>
+
+                <div class="setting-group">
+                    <button class="btn btn-primary" id="saveSettings">Save Settings</button>
+                    <button class="btn btn-secondary" id="resetSettings">Reset to Defaults</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manage Calendars Modal -->
+    <div class="modal hidden" id="calendarsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manage Calendars</h2>
+                <button class="close-btn" id="closeCalendars">✖️</button>
+            </div>
+            <div class="modal-body">
+                <div id="calendarsList">
+                    <!-- Calendars will be listed here -->
+                </div>
+                <button class="btn btn-primary" id="addCalendarBtn">+ Add Calendar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Calendar Modal -->
+    <div class="modal hidden" id="addCalendarModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Calendar</h2>
+                <button class="close-btn" id="closeAddCalendar">✖️</button>
+            </div>
+            <div class="modal-body">
+                <div class="calendar-type-selector">
+                    <button class="type-btn" data-type="google">Google Calendar</button>
+                    <button class="type-btn" data-type="icloud">iCloud Calendar</button>
+                    <button class="type-btn" data-type="ical">iCal URL</button>
+                    <button class="type-btn" data-type="caldav">CalDAV</button>
+                </div>
+
+                <div id="calendarForm" class="hidden">
+                    <div class="form-group">
+                        <label for="calendarName">Calendar Name:</label>
+                        <input type="text" id="calendarName" placeholder="e.g., Work, Personal, Family">
+                    </div>
+
+                    <div class="form-group" id="urlGroup">
+                        <label for="calendarUrl">Calendar URL:</label>
+                        <input type="url" id="calendarUrl" placeholder="https://...">
+                        <small class="help-text">Paste your calendar's iCal/ICS URL here</small>
+                    </div>
+
+                    <div class="form-group hidden" id="caldavGroup">
+                        <label for="caldavUsername">Username:</label>
+                        <input type="text" id="caldavUsername">
+
+                        <label for="caldavPassword">Password:</label>
+                        <input type="password" id="caldavPassword">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="calendarColor">Color:</label>
+                        <div class="color-picker" id="colorPicker">
+                            <div class="color-option" data-color="#3788d8" style="background: #3788d8;"></div>
+                            <div class="color-option" data-color="#e74c3c" style="background: #e74c3c;"></div>
+                            <div class="color-option" data-color="#2ecc71" style="background: #2ecc71;"></div>
+                            <div class="color-option" data-color="#f39c12" style="background: #f39c12;"></div>
+                            <div class="color-option" data-color="#9b59b6" style="background: #9b59b6;"></div>
+                            <div class="color-option" data-color="#1abc9c" style="background: #1abc9c;"></div>
+                            <div class="color-option" data-color="#e91e63" style="background: #e91e63;"></div>
+                            <div class="color-option" data-color="#ff5722" style="background: #ff5722;"></div>
+                        </div>
+                        <input type="hidden" id="selectedColor" value="#3788d8">
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-primary" id="submitCalendar">Add Calendar</button>
+                        <button class="btn btn-secondary" id="cancelAddCalendar">Cancel</button>
+                    </div>
+
+                    <div id="addCalendarError" class="error-message hidden"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- No Calendars Message -->
+    <div class="no-calendars-message hidden" id="noCalendarsMessage">
+        <div class="message-content">
+            <h2>👋 Welcome!</h2>
+            <p>You haven't added any calendars yet.</p>
+            <button class="btn btn-primary btn-large" id="setupCalendarsBtn">Set Up Calendars</button>
+        </div>
+    </div>
+
+    <script src="js/calendar.js"></script>
+</body>
+</html>

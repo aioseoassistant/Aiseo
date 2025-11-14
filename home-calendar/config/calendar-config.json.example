@@ -1,0 +1,12 @@
+{
+  "calendars": [],
+  "settings": {
+    "refreshInterval": 5,
+    "timeFormat": "12h",
+    "firstDayOfWeek": "sunday",
+    "showPastDays": 1,
+    "showFutureDays": 14,
+    "showLocation": true,
+    "showDescription": false
+  }
+}
