@@ -1,9 +1,18 @@
-# AI SEO Assistant
+# AI SEO Assistant + Azure Web Dialer
 
-A web-based SEO assistant that:
+A multi-purpose web application featuring:
+
+## SEO Assistant
 - Crawls websites (with JavaScript rendering using Playwright)
 - Analyzes SEO elements: title, meta tags, headings, alt text
 - Generates smart suggestions using AI (OpenAI)
+
+## Azure Web Dialer
+- Make and receive voice calls through your browser
+- DTMF (Dual-Tone Multi-Frequency) support for IVR systems
+- Real-time call status and duration tracking
+- Professional web-based phone interface
+- Built with Azure Communication Services
 
 ---
 
@@ -27,18 +36,53 @@ pip install -r requirements.txt
 python -m playwright install
 ```
 
-### 4. Run the app
+### 4. Configure Azure Web Dialer (Optional)
+
+To enable the web dialer functionality:
+
+1. Create an Azure Communication Services resource
+2. Acquire a phone number with voice capabilities
+3. Copy `.env.example` to `.env` and add your credentials:
+   ```
+   AZURE_COMMUNICATION_CONNECTION_STRING=endpoint=https://...
+   AZURE_PHONE_NUMBER=+1234567890
+   ```
+
+See [AZURE_DIALER_README.md](AZURE_DIALER_README.md) for detailed setup instructions.
+
+### 5. Run the app
 ```
 python app.py
 ```
 
 Go to `http://localhost:5000` in your browser.
 
+**Access the Web Dialer:** `http://localhost:5000/dialer`
+
 ---
 
-## Optional
-- You can connect OpenAI API later for meta tag generation
-- Add export to PDF/HTML reports
+## Features
+
+### SEO Analyzer
+- Crawl depth configuration (1-5 levels)
+- JavaScript rendering support
+- Internal link discovery
+- Comprehensive SEO metrics
+
+### Web Dialer
+- Voice calling from browser
+- DTMF tone support for IVR systems
+- Real-time call timer
+- Keyboard shortcuts for dialing
+- Microphone device management
+
+---
+
+## Optional Enhancements
+- Connect OpenAI API for SEO meta tag generation
+- Export SEO reports to PDF/HTML
+- Implement call recording (Azure feature)
+- Add user authentication for dialer
 
 ---
 
@@ -46,4 +90,6 @@ Go to `http://localhost:5000` in your browser.
 - Python + Flask
 - Playwright (Chromium headless browser)
 - BeautifulSoup
+- Azure Communication Services (voice calling)
+- WebRTC (browser calling)
 - OpenAI (optional)

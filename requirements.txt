@@ -5,3 +5,7 @@ playwright
 openai
 aiohttp
 tqdm
+azure-communication-identity
+azure-communication-phonenumbers
+azure-communication-callautomation
+python-dotenv
